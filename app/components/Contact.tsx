@@ -135,12 +135,9 @@ export default function Contact() {
           service_id: serviceId,
           template_id: templateId,
           user_id: publicKey,
-          public_key: publicKey,
           template_params: {
             name: payload.name,
             email: payload.email,
-            from_name: payload.name,
-            from_email: payload.email,
             subject: payload.subject,
             message: payload.message,
             to_email: payload.email,
