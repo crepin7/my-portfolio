@@ -96,10 +96,11 @@ export default function Contact() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const form = e.currentTarget;
     setSubmitError("");
     setIsSubmitting(true);
 
-    const formData = new FormData(e.currentTarget);
+    const formData = new FormData(form);
     const payload = {
       name: String(formData.get("name") ?? "").trim(),
       email: String(formData.get("email") ?? "").trim(),
@@ -134,6 +135,7 @@ export default function Contact() {
           service_id: serviceId,
           template_id: templateId,
           user_id: publicKey,
+          public_key: publicKey,
           template_params: {
             name: payload.name,
             email: payload.email,
@@ -147,14 +149,21 @@ export default function Contact() {
       });
 
       if (!response.ok) {
-        throw new Error("Request failed");
+        const details = (await response.text()).trim();
+        throw new Error(details || `Request failed (${response.status})`);
       }
 
-      e.currentTarget.reset();
+      form.reset();
+      setSubmitError("");
       setIsSubmitted(true);
       setTimeout(() => setIsSubmitted(false), 3000);
-    } catch {
-      setSubmitError(language === "fr" ? "Echec de l'envoi. Reessaie dans un instant." : "Sending failed. Please try again.");
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Unknown error";
+      setSubmitError(
+        language === "fr"
+          ? `Echec de l'envoi: ${message}`
+          : `Sending failed: ${message}`,
+      );
     } finally {
       setIsSubmitting(false);
     }
