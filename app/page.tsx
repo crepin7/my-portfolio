@@ -9,7 +9,7 @@ import Footer from "./components/Footer";
 
 export default function Home() {
   return (
-    <main className="relative min-h-screen bg-black text-white overflow-x-hidden">
+    <main className="relative min-h-screen bg-zinc-50 text-zinc-900 dark:bg-black dark:text-white overflow-x-hidden">
       {/* Background Particles */}
       <Particles />
       

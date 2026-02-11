@@ -3,30 +3,88 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef, useState } from "react";
-import { Mail, MapPin, Send, Github, Linkedin, Twitter, Loader2 } from "lucide-react";
-
-const contactInfo = [
-  {
-    icon: Mail,
-    label: "Email",
-    value: "alex@example.com",
-    href: "mailto:alex@example.com",
-  },
-  {
-    icon: MapPin,
-    label: "Localisation",
-    value: "Paris, France",
-    href: null,
-  },
-];
+import { Mail, Send, Github, Linkedin, Twitter, Loader2 } from "lucide-react";
+import { useLanguage } from "../i18n/LanguageProvider";
 
 const socialLinks = [
-  { name: "GitHub", icon: Github, href: "https://github.com" },
-  { name: "LinkedIn", icon: Linkedin, href: "https://linkedin.com" },
-  { name: "Twitter", icon: Twitter, href: "https://twitter.com" },
+  { name: "GitHub", icon: Github, href: "https://github.com/crepin7" },
+  { name: "LinkedIn", icon: Linkedin, href: "https://www.linkedin.com/in/cr%C3%A9pin-aziamadji-8a1b722b0/" },
+  { name: "X", icon: Twitter, href: "https://x.com/crepinote" },
 ];
 
+const copy = {
+  fr: {
+    badge: "Contact",
+    title: "Travaillons ensemble",
+    intro:
+      "Vous avez un projet en tete ? N'hesitez pas a me contacter. Je suis toujours ouvert aux nouvelles opportunites et collaborations.",
+    labels: {
+      name: "Nom",
+      email: "Email",
+      subject: "Sujet",
+      message: "Message",
+    },
+    placeholders: {
+      name: "Votre nom",
+      email: "votre@email.com",
+      subject: "Sujet de votre message",
+      message: "Decrivez votre projet...",
+    },
+    submitIdle: "Envoyer le message",
+    submitLoading: "Envoi en cours...",
+    submitDone: "Message envoye !",
+    info: [
+      { icon: Mail, label: "Email", value: "aziamadjicrepin@gmail.com", href: "mailto:aziamadjicrepin@gmail.com" },
+      { icon: Github, label: "GitHub", value: "github.com/crepin7", href: "https://github.com/crepin7" },
+      { icon: Linkedin, label: "LinkedIn", value: "crepin-aziamadji", href: "https://www.linkedin.com/in/cr%C3%A9pin-aziamadji-8a1b722b0/" },
+      { icon: Twitter, label: "X", value: "x.com/crepinote", href: "https://x.com/crepinote" },
+    ],
+    socialsTitle: "Reseaux sociaux",
+    availabilityTitle: "Disponible",
+    availabilityText:
+      "Je suis actuellement disponible pour des projets freelance et des collaborations. N'hesitez pas a me contacter pour discuter de vos idees.",
+    quickResponseTitle: "Reponse rapide garantie",
+    quickResponseText: "Je reponds generalement sous 24 heures aux emails et messages.",
+  },
+  en: {
+    badge: "Contact",
+    title: "Let's work together",
+    intro:
+      "Do you have a project in mind? Feel free to contact me. I am always open to new opportunities and collaborations.",
+    labels: {
+      name: "Name",
+      email: "Email",
+      subject: "Subject",
+      message: "Message",
+    },
+    placeholders: {
+      name: "Your name",
+      email: "your@email.com",
+      subject: "Message subject",
+      message: "Describe your project...",
+    },
+    submitIdle: "Send message",
+    submitLoading: "Sending...",
+    submitDone: "Message sent!",
+    info: [
+      { icon: Mail, label: "Email", value: "aziamadjicrepin@gmail.com", href: "mailto:aziamadjicrepin@gmail.com" },
+      { icon: Github, label: "GitHub", value: "github.com/crepin7", href: "https://github.com/crepin7" },
+      { icon: Linkedin, label: "LinkedIn", value: "crepin-aziamadji", href: "https://www.linkedin.com/in/cr%C3%A9pin-aziamadji-8a1b722b0/" },
+      { icon: Twitter, label: "X", value: "x.com/crepinote", href: "https://x.com/crepinote" },
+    ],
+    socialsTitle: "Social networks",
+    availabilityTitle: "Available",
+    availabilityText:
+      "I am currently available for freelance projects and collaborations. Feel free to contact me to discuss your ideas.",
+    quickResponseTitle: "Fast response guaranteed",
+    quickResponseText: "I usually reply to emails and messages within 24 hours.",
+  },
+};
+
 export default function Contact() {
+  const { language } = useLanguage();
+  const t = copy[language];
+
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -35,24 +93,20 @@ export default function Contact() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Simulate form submission
+
     await new Promise((resolve) => setTimeout(resolve, 1500));
-    
+
     setIsSubmitting(false);
     setIsSubmitted(true);
-    
-    // Reset after 3 seconds
+
     setTimeout(() => setIsSubmitted(false), 3000);
   };
 
   return (
-    <section id="contact" className="relative py-20 sm:py-28 bg-black">
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-t from-violet-900/10 via-black to-black" />
-      
+    <section id="contact" className="relative py-20 sm:py-28 bg-zinc-50 dark:bg-black">
+      <div className="absolute inset-0 bg-gradient-to-t from-violet-200/50 via-zinc-50 to-zinc-50 dark:from-violet-900/10 dark:via-black dark:to-black" />
+
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
         <motion.div
           ref={ref}
           initial={{ opacity: 0, y: 40 }}
@@ -66,21 +120,15 @@ export default function Contact() {
             animate={isInView ? { opacity: 1, scale: 1 } : {}}
             transition={{ delay: 0.1 }}
           >
-            Contact
+            {t.badge}
           </motion.span>
-          
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6">
-            Travaillons ensemble
-          </h2>
-          
-          <p className="text-lg text-zinc-400 max-w-3xl mx-auto">
-            Vous avez un projet en tête ? N'hésitez pas à me contacter. 
-            Je suis toujours ouvert aux nouvelles opportunités et collaborations.
-          </p>
+
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-zinc-900 dark:text-white mb-6">{t.title}</h2>
+
+          <p className="text-lg text-zinc-600 dark:text-zinc-400 max-w-3xl mx-auto">{t.intro}</p>
         </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-12">
-          {/* Contact Form */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
@@ -89,54 +137,54 @@ export default function Contact() {
             <form onSubmit={handleSubmit} className="glass rounded-2xl p-8 space-y-6">
               <div className="grid sm:grid-cols-2 gap-6">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-zinc-300 mb-2">
-                    Nom
+                  <label htmlFor="name" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
+                    {t.labels.name}
                   </label>
                   <input
                     type="text"
                     id="name"
                     required
-                    className="w-full px-4 py-3 rounded-xl bg-zinc-900/50 border border-zinc-800 text-white placeholder-zinc-500 focus:outline-none focus:border-violet-500 transition-colors"
-                    placeholder="Votre nom"
+                    className="w-full px-4 py-3 rounded-xl bg-white/80 dark:bg-zinc-900/50 border border-zinc-300 dark:border-zinc-800 text-zinc-900 dark:text-white placeholder-zinc-500 focus:outline-none focus:border-violet-500 transition-colors"
+                    placeholder={t.placeholders.name}
                   />
                 </div>
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-zinc-300 mb-2">
-                    Email
+                  <label htmlFor="email" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
+                    {t.labels.email}
                   </label>
                   <input
                     type="email"
                     id="email"
                     required
-                    className="w-full px-4 py-3 rounded-xl bg-zinc-900/50 border border-zinc-800 text-white placeholder-zinc-500 focus:outline-none focus:border-violet-500 transition-colors"
-                    placeholder="votre@email.com"
+                    className="w-full px-4 py-3 rounded-xl bg-white/80 dark:bg-zinc-900/50 border border-zinc-300 dark:border-zinc-800 text-zinc-900 dark:text-white placeholder-zinc-500 focus:outline-none focus:border-violet-500 transition-colors"
+                    placeholder={t.placeholders.email}
                   />
                 </div>
               </div>
 
               <div>
-                <label htmlFor="subject" className="block text-sm font-medium text-zinc-300 mb-2">
-                  Sujet
+                <label htmlFor="subject" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
+                  {t.labels.subject}
                 </label>
                 <input
                   type="text"
                   id="subject"
                   required
-                  className="w-full px-4 py-3 rounded-xl bg-zinc-900/50 border border-zinc-800 text-white placeholder-zinc-500 focus:outline-none focus:border-violet-500 transition-colors"
-                  placeholder="Sujet de votre message"
+                  className="w-full px-4 py-3 rounded-xl bg-white/80 dark:bg-zinc-900/50 border border-zinc-300 dark:border-zinc-800 text-zinc-900 dark:text-white placeholder-zinc-500 focus:outline-none focus:border-violet-500 transition-colors"
+                  placeholder={t.placeholders.subject}
                 />
               </div>
 
               <div>
-                <label htmlFor="message" className="block text-sm font-medium text-zinc-300 mb-2">
-                  Message
+                <label htmlFor="message" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
+                  {t.labels.message}
                 </label>
                 <textarea
                   id="message"
                   required
                   rows={5}
-                  className="w-full px-4 py-3 rounded-xl bg-zinc-900/50 border border-zinc-800 text-white placeholder-zinc-500 focus:outline-none focus:border-violet-500 transition-colors resize-none"
-                  placeholder="Décrivez votre projet..."
+                  className="w-full px-4 py-3 rounded-xl bg-white/80 dark:bg-zinc-900/50 border border-zinc-300 dark:border-zinc-800 text-zinc-900 dark:text-white placeholder-zinc-500 focus:outline-none focus:border-violet-500 transition-colors resize-none"
+                  placeholder={t.placeholders.message}
                 />
               </div>
 
@@ -146,7 +194,7 @@ export default function Contact() {
                 className={`w-full py-4 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all duration-300 ${
                   isSubmitted
                     ? "bg-green-500 text-white"
-                    : "bg-white text-black hover:bg-zinc-200"
+                    : "bg-zinc-900 dark:bg-white text-white dark:text-black hover:bg-zinc-700 dark:hover:bg-zinc-200"
                 }`}
                 whileHover={!isSubmitting && !isSubmitted ? { scale: 1.02 } : {}}
                 whileTap={!isSubmitting && !isSubmitted ? { scale: 0.98 } : {}}
@@ -154,32 +202,28 @@ export default function Contact() {
                 {isSubmitting ? (
                   <>
                     <Loader2 className="animate-spin" size={20} />
-                    Envoi en cours...
+                    {t.submitLoading}
                   </>
                 ) : isSubmitted ? (
-                  <>
-                    Message envoyé !
-                  </>
+                  <>{t.submitDone}</>
                 ) : (
                   <>
                     <Send size={20} />
-                    Envoyer le message
+                    {t.submitIdle}
                   </>
                 )}
               </motion.button>
             </form>
           </motion.div>
 
-          {/* Contact Info */}
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.3 }}
             className="space-y-8"
           >
-            {/* Info Cards */}
             <div className="space-y-4">
-              {contactInfo.map((item, index) => (
+              {t.info.map((item, index) => (
                 <motion.div
                   key={item.label}
                   initial={{ opacity: 0, y: 20 }}
@@ -191,32 +235,26 @@ export default function Contact() {
                     <item.icon className="text-violet-400" size={24} />
                   </div>
                   <div>
-                    <p className="text-sm text-zinc-500">{item.label}</p>
+                    <p className="text-sm text-zinc-600 dark:text-zinc-500">{item.label}</p>
                     {item.href ? (
-                      <a
-                        href={item.href}
-                        className="text-white hover:text-violet-400 transition-colors"
-                      >
+                      <a href={item.href} className="text-zinc-900 dark:text-white hover:text-violet-400 transition-colors">
                         {item.value}
                       </a>
                     ) : (
-                      <p className="text-white">{item.value}</p>
+                      <p className="text-zinc-900 dark:text-white">{item.value}</p>
                     )}
                   </div>
                 </motion.div>
               ))}
             </div>
 
-            {/* Social Links */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.6 }}
               className="glass rounded-2xl p-6"
             >
-              <h3 className="text-lg font-semibold text-white mb-4">
-                Réseaux sociaux
-              </h3>
+              <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">{t.socialsTitle}</h3>
               <div className="flex gap-4">
                 {socialLinks.map((social) => (
                   <motion.a
@@ -224,7 +262,7 @@ export default function Contact() {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-12 h-12 rounded-xl bg-zinc-800/50 flex items-center justify-center text-zinc-400 hover:text-white hover:bg-violet-500/20 transition-all duration-300"
+                    className="w-12 h-12 rounded-xl bg-zinc-200/80 dark:bg-zinc-800/50 flex items-center justify-center text-zinc-700 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-violet-500/20 transition-all duration-300"
                     whileHover={{ scale: 1.1, y: -2 }}
                     whileTap={{ scale: 0.9 }}
                   >
@@ -234,7 +272,6 @@ export default function Contact() {
               </div>
             </motion.div>
 
-            {/* Availability */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -243,24 +280,19 @@ export default function Contact() {
             >
               <div className="flex items-center gap-3 mb-3">
                 <span className="w-3 h-3 rounded-full bg-green-400 animate-pulse" />
-                <span className="text-green-400 font-medium">Disponible</span>
+                <span className="text-green-400 font-medium">{t.availabilityTitle}</span>
               </div>
-              <p className="text-zinc-400 text-sm">
-                Je suis actuellement disponible pour des projets freelance et des collaborations. 
-                N'hésitez pas à me contacter pour discuter de vos idées.
-              </p>
+              <p className="text-zinc-600 dark:text-zinc-400 text-sm">{t.availabilityText}</p>
             </motion.div>
 
-            {/* Quick Response */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.8 }}
               className="rounded-2xl p-6 bg-gradient-to-br from-violet-500/10 to-fuchsia-500/10 border border-violet-500/20"
             >
-              <p className="text-zinc-300 text-sm">
-                <span className="text-white font-medium">Réponse rapide garantie</span> - 
-                Je réponds généralement sous 24 heures aux emails et messages.
+              <p className="text-zinc-700 dark:text-zinc-300 text-sm">
+                <span className="text-zinc-900 dark:text-white font-medium">{t.quickResponseTitle}</span> - {t.quickResponseText}
               </p>
             </motion.div>
           </motion.div>
