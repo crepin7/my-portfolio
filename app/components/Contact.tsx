@@ -89,17 +89,75 @@ export default function Contact() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+  const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+  const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setSubmitError("");
     setIsSubmitting(true);
 
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    const formData = new FormData(e.currentTarget);
+    const payload = {
+      name: String(formData.get("name") ?? "").trim(),
+      email: String(formData.get("email") ?? "").trim(),
+      subject: String(formData.get("subject") ?? "").trim(),
+      message: String(formData.get("message") ?? "").trim(),
+      website: String(formData.get("website") ?? "").trim(),
+    };
 
-    setIsSubmitting(false);
-    setIsSubmitted(true);
+    if (!payload.name || !payload.email || !payload.subject || !payload.message) {
+      setSubmitError(language === "fr" ? "Veuillez remplir tous les champs." : "Please fill in all fields.");
+      setIsSubmitting(false);
+      return;
+    }
 
-    setTimeout(() => setIsSubmitted(false), 3000);
+    if (!serviceId || !templateId || !publicKey) {
+      setSubmitError(
+        language === "fr"
+          ? "Configuration EmailJS manquante (service/template/public key)."
+          : "Missing EmailJS configuration (service/template/public key).",
+      );
+      setIsSubmitting(false);
+      return;
+    }
+
+    try {
+      const response = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          service_id: serviceId,
+          template_id: templateId,
+          user_id: publicKey,
+          template_params: {
+            name: payload.name,
+            email: payload.email,
+            from_name: payload.name,
+            from_email: payload.email,
+            subject: payload.subject,
+            message: payload.message,
+            to_email: payload.email,
+          },
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Request failed");
+      }
+
+      e.currentTarget.reset();
+      setIsSubmitted(true);
+      setTimeout(() => setIsSubmitted(false), 3000);
+    } catch {
+      setSubmitError(language === "fr" ? "Echec de l'envoi. Reessaie dans un instant." : "Sending failed. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -143,6 +201,7 @@ export default function Contact() {
                   <input
                     type="text"
                     id="name"
+                    name="name"
                     required
                     className="w-full px-4 py-3 rounded-xl bg-white/80 dark:bg-zinc-900/50 border border-zinc-300 dark:border-zinc-800 text-zinc-900 dark:text-white placeholder-zinc-500 focus:outline-none focus:border-violet-500 transition-colors"
                     placeholder={t.placeholders.name}
@@ -155,6 +214,7 @@ export default function Contact() {
                   <input
                     type="email"
                     id="email"
+                    name="email"
                     required
                     className="w-full px-4 py-3 rounded-xl bg-white/80 dark:bg-zinc-900/50 border border-zinc-300 dark:border-zinc-800 text-zinc-900 dark:text-white placeholder-zinc-500 focus:outline-none focus:border-violet-500 transition-colors"
                     placeholder={t.placeholders.email}
@@ -169,6 +229,7 @@ export default function Contact() {
                 <input
                   type="text"
                   id="subject"
+                  name="subject"
                   required
                   className="w-full px-4 py-3 rounded-xl bg-white/80 dark:bg-zinc-900/50 border border-zinc-300 dark:border-zinc-800 text-zinc-900 dark:text-white placeholder-zinc-500 focus:outline-none focus:border-violet-500 transition-colors"
                   placeholder={t.placeholders.subject}
@@ -181,12 +242,17 @@ export default function Contact() {
                 </label>
                 <textarea
                   id="message"
+                  name="message"
                   required
                   rows={5}
                   className="w-full px-4 py-3 rounded-xl bg-white/80 dark:bg-zinc-900/50 border border-zinc-300 dark:border-zinc-800 text-zinc-900 dark:text-white placeholder-zinc-500 focus:outline-none focus:border-violet-500 transition-colors resize-none"
                   placeholder={t.placeholders.message}
                 />
               </div>
+
+              <input type="text" name="website" className="hidden" tabIndex={-1} autoComplete="off" />
+
+              {submitError ? <p className="text-sm text-red-400">{submitError}</p> : null}
 
               <motion.button
                 type="submit"
