@@ -1,0 +1,13 @@
+# https://crepin.dev/robots.txt
+User-agent: *
+Allow: /
+
+# Crawl delay pour éviter de surcharger le serveur
+Crawl-delay: 1
+
+# Sitemaps
+Sitemap: https://crepin.dev/sitemap.xml
+
+# Chemins disallowed (si nécessaire)
+Disallow: /api/
+Disallow: /admin/

@@ -2,8 +2,8 @@
 
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
-import { useRef, useState } from "react";
-import { ExternalLink, Github, ArrowUpRight } from "lucide-react";
+import { useRef, useState, lazy, Suspense } from "react";
+import { ExternalLink, Github, ArrowUpRight, Loader2 } from "lucide-react";
 import { useLanguage } from "../i18n/LanguageProvider";
 
 type CategoryKey = "all" | "featured" | "web" | "ai" | "mobile";

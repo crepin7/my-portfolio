@@ -6,6 +6,19 @@ import Skills from "./components/Skills";
 import Projects from "./components/Projects";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Crépin AZIAMADJI | Développeur Full Stack & IA",
+  description: "Développeur passionné spécialisé en web, Next.js, React, Python et intelligence artificielle. Découvrez mes projets et compétences.",
+  keywords: ["développeur full stack", "développeur IA", "React", "Next.js", "Python", "Flutter", "machine learning", "crépin aziamadji"],
+  openGraph: {
+    title: "Crépin AZIAMADJI | Développeur Full Stack & IA",
+    description: "Développeur passionné spécialisé en web, Next.js, React, Python et intelligence artificielle.",
+    url: "https://crepin.dev/",
+    type: "website",
+  },
+};
 
 export default function Home() {
   return (
