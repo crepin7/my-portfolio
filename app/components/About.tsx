@@ -25,7 +25,6 @@ const copy = {
     stats: [
       { number: "29+", label: "repos GitHub" },
       { number: "6", label: "repos publics" },
-      { number: "1", label: "agent personnel (OWL)" },
     ],
   },
   en: {
@@ -47,7 +46,6 @@ const copy = {
     stats: [
       { number: "29+", label: "GitHub repos" },
       { number: "6", label: "public repos" },
-      { number: "1", label: "personal agent (OWL)" },
     ],
   },
 };

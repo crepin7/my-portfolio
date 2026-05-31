@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
-import ThemeToggle from "./ThemeToggle";
 import LanguageToggle from "./LanguageToggle";
 import { useLanguage } from "../i18n/LanguageProvider";
 
@@ -73,7 +72,6 @@ export default function Navigation() {
             ))}
             <div className="h-4 w-px bg-border" />
             <LanguageToggle />
-            <ThemeToggle />
           </div>
 
           {/* Mobile toggle */}
@@ -108,7 +106,6 @@ export default function Navigation() {
             ))}
             <div className="flex items-center gap-4 mt-4">
               <LanguageToggle />
-              <ThemeToggle />
             </div>
           </motion.div>
         )}
