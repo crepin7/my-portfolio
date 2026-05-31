@@ -1,91 +1,73 @@
-# Portfolio — Crépin Aziamadji
+# Portfolio — Crepin AZIAMADJI
 
-Portfolio personnel développé avec **Next.js 16**, **React 19**, **TypeScript**, **Tailwind CSS v4** et **Framer Motion**.
+> Portfolio personnel. Theme sombre, typographie soignée, animations discretes.
 
-## Aperçu
+[https://crepin-aziamadji.vercel.app](https://crepin-aziamadji.vercel.app)
 
-Ce projet présente mon profil de développeur Full Stack orienté web et intelligence artificielle, avec une interface moderne, animée et responsive.
+---
 
-### Fonctionnalités
+## Apercu
 
-- Interface **bilingue** : français / anglais.
-- **Mode clair / sombre** avec persistance en local.
-- Navigation fluide par sections (scroll smooth).
-- Sections dédiées : Hero, À propos, Compétences, Projets, Contact.
-- Animations UI avec Framer Motion.
-- Design responsive (mobile, tablette, desktop).
+Site one-page presentant mon profil d'ingenieur logiciel : parcours, projets et contact. Bilingue francais/anglais, entierement responsive, compile en statique via Next.js 16.
 
-## Stack technique
+## Stack
 
-- **Framework** : Next.js 16 (App Router)
-- **UI** : React 19, Tailwind CSS v4
-- **Animations** : Framer Motion
-- **Icônes** : Lucide React
-- **Langage** : TypeScript
-- **Linting** : ESLint
+| Couche | Technologie |
+|--------|-------------|
+| Framework | Next.js 16 — App Router, SSG |
+| UI | React 19, Tailwind CSS v4 |
+| Animations | Framer Motion |
+| Langage | TypeScript strict |
+| Icenes | Lucide React |
+| Deploiement | Vercel |
 
-## Structure du projet
+## Structure
 
-```txt
+```
 app/
-  components/
-    About.tsx
-    Contact.tsx
-    Footer.tsx
-    Hero.tsx
-    LanguageToggle.tsx
-    Navigation.tsx
-    Particles.tsx
-    Projects.tsx
-    Skills.tsx
-    ThemeToggle.tsx
-  i18n/
-    LanguageProvider.tsx
-  globals.css
-  layout.tsx
-  page.tsx
+├── api/contact/route.ts    # Endpoint email (Resend)
+├── components/
+│   ├── About.tsx           # Parcours + stats + stack
+│   ├── Contact.tsx         # Formulaire + infos
+│   ├── Footer.tsx          # Liens sociaux + copyright
+│   ├── Hero.tsx            # Terminal-style intro
+│   ├── LanguageToggle.tsx  # FR/EN switch
+│   ├── Navigation.tsx      # Header fixe + mobile menu
+│   └── Projects.tsx        # Grille de projets filtables
+├── i18n/
+│   └── LanguageProvider.tsx  # Contexte FR/EN + localStorage
+├── globals.css             # Thème dark, variables, utilitaires
+├── layout.tsx              # Root layout + metadata SEO
+└── page.tsx                # Assemblage des sections
 ```
 
 ## Installation
 
-### Prérequis
-
-- Node.js 20+
-- npm (ou yarn / pnpm / bun)
-
-### Étapes
-
 ```bash
-git clone <url-du-repo>
+gh repo clone crepin7/my-portfolio
 cd my-portfolio
 npm install
-```
-
-## Lancer le projet
-
-```bash
 npm run dev
 ```
 
-Application disponible sur : [http://localhost:3000](http://localhost:3000)
+Application sur [http://localhost:3000](http://localhost:3000).
 
-## Scripts utiles
+## Scripts
 
-```bash
-npm run dev     # Démarrage en développement
-npm run build   # Build de production
-npm run start   # Lancement du build
-npm run lint    # Vérification ESLint
-```
+| Commande | Description |
+|----------|-------------|
+| `npm run dev` | Serveur de developpement |
+| `npm run build` | Build production |
+| `npm run start` | Serveur production |
+| `npm run lint` | Verification ESLint |
 
-## Déploiement
+## Deploiement
 
-Le projet est prêt à être déployé sur **Vercel** (recommandé), mais fonctionne aussi sur toute plateforme compatible Node.js.
+Connecter le repo a Vercel suffit. Le build est `next build`, le output est automatiquement detecte. Aucune variable d'environnement requise pour le frontend. Le formulaire de contact utilise Resend (`RESEND_API_KEY`, `CONTACT_TO_EMAIL` en option).
 
-## Auteur
+---
 
-**Crépin AZIAMADJI**
+**Crepin AZIAMADJI** — ingenieur logiciel
 
 - GitHub : [@crepin7](https://github.com/crepin7)
-- LinkedIn : [Crépin Aziamadji](https://www.linkedin.com/in/cr%C3%A9pin-aziamadji-8a1b722b0/)
-- X : [@crepinote](https://x.com/crepinote)
+- LinkedIn : [crepin-aziamadji](https://www.linkedin.com/in/cr%C3%A9pin-aziamadji-8a1b722b0/)
