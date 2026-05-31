@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowDown, Download, Github, Linkedin, Mail } from "lucide-react";
+import { ArrowDown, Github, Linkedin, Mail } from "lucide-react";
 import { useLanguage } from "../i18n/LanguageProvider";
 
 const socialLinks = [
@@ -12,190 +12,173 @@ const socialLinks = [
 
 const copy = {
   fr: {
-    badge: "Disponible pour de nouveaux projets",
-    role: "Developpeur Full Stack",
-    subtitle: "& Intelligence Artificielle",
+    available: "disponible",
+    greeting: "salut.",
+    name: "crepin aziamadji",
+    role: "ingenieur logiciel",
     description:
-      "Je cree des experiences web exceptionnelles et des solutions IA innovantes. Specialise dans le developpement d'applications modernes, performantes et evolutives.",
-    ctaContact: "Me contacter",
-    ctaProjects: "Voir mes projets",
-    ctaCv: "CV",
-    techTitle: "Technologies favorites",
-    contactLabel: "#contact",
-    projectsLabel: "#projects",
+      "je construis des outils et des applications de la terminal au navigateur. linux au quotidien, git avance, automatisation et IA. chaque projet demarre par un bon Makefile.",
+    ctaProjects: "voir les projets",
+    ctaContact: "me contacter",
+    scroll: "scroll",
   },
   en: {
-    badge: "Available for new projects",
-    role: "Full Stack Developer",
-    subtitle: "& Artificial Intelligence",
+    available: "available",
+    greeting: "hey.",
+    name: "crepin aziamadji",
+    role: "software engineer",
     description:
-      "I build exceptional web experiences and innovative AI solutions. Specialized in modern, high-performance, and scalable application development.",
-    ctaContact: "Contact me",
-    ctaProjects: "View my projects",
-    ctaCv: "Resume",
-    techTitle: "Favorite technologies",
-    contactLabel: "#contact",
-    projectsLabel: "#projects",
+      "i build tools and applications from terminal to browser. linux daily driver, advanced git, automation and AI. every project starts with a solid Makefile.",
+    ctaProjects: "view projects",
+    ctaContact: "get in touch",
+    scroll: "scroll",
   },
 };
-
-const techStack = ["React", "Next.js", "TypeScript", "Node.js", "Flutter", "Python", "PostgreSQL"];
 
 export default function Hero() {
   const { language } = useLanguage();
   const t = copy[language];
 
-  const scrollToAbout = () => {
-    const element = document.querySelector("#about");
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
   return (
-    <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden py-20">
-      <div className="absolute inset-0 bg-gradient-to-b from-violet-200/70 via-zinc-50 to-zinc-50 dark:from-violet-900/20 dark:via-black dark:to-black" />
+    <section id="hero" className="relative min-h-screen flex items-center overflow-hidden">
+      {/* Subtle dot grid background */}
+      <div className="absolute inset-0 dot-grid opacity-[0.03]" />
 
-      <div className="absolute inset-0 overflow-hidden">
+      {/* Vertical accent line */}
+      <div className="absolute left-8 sm:left-12 md:left-16 top-0 bottom-0 w-px">
         <motion.div
-          className="absolute top-1/4 left-1/4 w-96 h-96 bg-violet-600/20 rounded-full blur-3xl"
-          animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-fuchsia-600/20 rounded-full blur-3xl"
-          animate={{ scale: [1.2, 1, 1.2], opacity: [0.3, 0.5, 0.3] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 4 }}
+          className="glow-line w-full"
+          initial={{ height: "0%" }}
+          animate={{ height: "100%" }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
         />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div className="relative z-10 max-w-5xl mx-auto px-6 sm:px-12 md:px-16 w-full pt-32 pb-20">
+        {/* Terminal-style prompt */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-8"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4 }}
+          className="flex items-center gap-2 mb-8"
         >
-          <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-          <span className="text-sm text-zinc-700 dark:text-zinc-300">{t.badge}</span>
+          <span className="font-mono text-sm text-accent">$</span>
+          <span className="font-mono text-sm text-muted">whoami</span>
         </motion.div>
 
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
+        {/* Status badge */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6"
+          transition={{ duration: 0.5, delay: 0.15 }}
+          className="flex items-center gap-2 mb-6"
         >
-          <span className="block text-zinc-900 dark:text-white mb-2">Crepin AZIAMADJI</span>
-          <span className="block gradient-text">{t.role}</span>
-          <span className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-zinc-600 dark:text-zinc-500 mt-4">{t.subtitle}</span>
+          <span className="relative flex h-2.5 w-2.5">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-success opacity-50"></span>
+            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-success"></span>
+          </span>
+          <span className="text-xs font-mono text-muted uppercase tracking-widest">
+            {t.available}
+          </span>
+        </motion.div>
+
+        {/* Greeting */}
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.25 }}
+          className="text-accent font-mono text-lg sm:text-xl mb-2"
+        >
+          {t.greeting}
+        </motion.p>
+
+        {/* Name */}
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.35 }}
+          className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight mb-2"
+        >
+          {t.name}
         </motion.h1>
 
+        {/* Role */}
         <motion.p
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-lg sm:text-xl text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto mb-10 leading-relaxed"
+          transition={{ duration: 0.5, delay: 0.45 }}
+          className="text-xl sm:text-2xl md:text-3xl text-muted font-light mb-8"
+        >
+          {t.role}
+        </motion.p>
+
+        {/* Description */}
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay 0.55 }}
+          className="text-base sm:text-lg text-muted max-w-2xl leading-relaxed mb-12"
         >
           {t.description}
         </motion.p>
 
+        {/* CTA Buttons */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12"
+          transition={{ duration: 0.5, delay 0.65 }}
+          className="flex flex-col sm:flex-row items-start gap-4 mb-16"
         >
-          <motion.a
-            href={t.contactLabel}
-            onClick={(e) => {
-              e.preventDefault();
-              document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" });
-            }}
-            className="group relative px-8 py-4 bg-zinc-900 text-white dark:bg-white dark:text-black font-semibold rounded-full overflow-hidden transition-all duration-300 hover:shadow-[0_0_40px_rgba(17,24,39,0.22)] dark:hover:shadow-[0_0_40px_rgba(255,255,255,0.3)]"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+          <a
+            href="#projects"
+            onClick={(e) => { e.preventDefault(); document.querySelector("#projects")?.scrollIntoView({ behavior: "smooth" }); }}
+            className="group flex items-center gap-2 px-6 py-3 bg-accent text-background font-mono text-sm rounded-lg transition-all duration-200 hover:brightness-110"
           >
-            <span className="relative z-10 flex items-center gap-2">
-              {t.ctaContact}
-              <motion.span animate={{ x: [0, 4, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
-                -&gt;
-              </motion.span>
-            </span>
-          </motion.a>
-
-          <motion.a
-            href={t.projectsLabel}
-            onClick={(e) => {
-              e.preventDefault();
-              document.querySelector("#projects")?.scrollIntoView({ behavior: "smooth" });
-            }}
-            className="group px-8 py-4 glass text-zinc-900 dark:text-white font-semibold rounded-full transition-all duration-300 hover:bg-zinc-900/10 dark:hover:bg-white/10"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            <span>→</span>
+            {t.ctaProjects}
+          </a>
+          <a
+            href="#contact"
+            onClick={(e) => { e.preventDefault(); document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" }); }}
+            className="flex items-center gap-2 px-6 py-3 surface rounded-lg font-mono text-sm text-muted text-foreground surface-hover"
           >
-            <span className="flex items-center gap-2">{t.ctaProjects}</span>
-          </motion.a>
-
-          <motion.a
-            href="/cv.pdf"
-            className="group px-8 py-4 border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 font-semibold rounded-full transition-all duration-300 hover:border-zinc-400 dark:hover:border-zinc-500 hover:text-zinc-900 dark:hover:text-white flex items-center gap-2"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Download size={18} />
-            {t.ctaCv}
-          </motion.a>
+            <span>~</span>
+            {t.ctaContact}
+          </a>
         </motion.div>
 
+        {/* Social links */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="flex items-center justify-center gap-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.8 }}
+          className="flex items-center gap-5"
         >
-          {socialLinks.map((social, index) => (
-            <motion.a
+          {socialLinks.map((social) => (
+            <a
               key={social.name}
               href={social.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-12 h-12 flex items-center justify-center rounded-full glass text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-900/10 dark:hover:bg-white/10 transition-all duration-300"
-              whileHover={{ scale: 1.1, y: -2 }}
-              whileTap={{ scale: 0.9 }}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 + index * 0.1 }}
+              className="text-muted hover:text-accent transition-colors duration-200"
+              aria-label={social.name}
             >
-              <social.icon size={20} />
-            </motion.a>
+              <social.icon size={18} />
+            </a>
           ))}
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-          className="mt-16 pt-8 border-t border-zinc-300 dark:border-zinc-800"
-        >
-          <p className="text-sm text-zinc-600 dark:text-zinc-500 mb-4">{t.techTitle}</p>
-          <div className="flex flex-wrap items-center justify-center gap-6 text-zinc-600 dark:text-zinc-400">
-            {techStack.map((tech) => (
-              <span key={tech} className="text-sm font-mono hover:text-zinc-900 dark:hover:text-white transition-colors cursor-default">
-                {tech}
-              </span>
-            ))}
-          </div>
+          <div className="h-px flex-1 max-w-16 bg-border" />
         </motion.div>
       </div>
 
+      {/* Scroll indicator */}
       <motion.button
-        onClick={scrollToAbout}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-zinc-600 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors"
-        animate={{ y: [0, 8, 0] }}
+        onClick={() => document.querySelector("#about")?.scrollIntoView({ behavior: "smooth" })}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-muted hover:text-accent transition-colors"
+        animate={{ y: [0, 6, 0] }}
         transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
       >
-        <ArrowDown size={24} />
+        <span className="text-xs font-mono uppercase tracking-widest">{t.scroll}</span>
+        <ArrowDown size={14} />
       </motion.button>
     </section>
   );

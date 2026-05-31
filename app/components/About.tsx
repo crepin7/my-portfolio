@@ -3,203 +3,147 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
-import { Code2, Database, Brain, Globe, Terminal, Cpu } from "lucide-react";
 import { useLanguage } from "../i18n/LanguageProvider";
-
-const featureIcons = [Code2, Database, Brain, Globe, Terminal, Cpu];
 
 const copy = {
   fr: {
-    badge: "A propos de moi",
-    title: "Developpeur passionne par l'innovation",
-    intro:
-      "Je suis un developpeur polyvalent oriente web, mobile, logiciels et intelligence artificielle, avec une pratique quotidienne des outils modernes de developpement.",
-    journeyTitle: "Mon parcours",
-    journeyParagraphs: [
-      "Je travaille principalement sous Linux (Ubuntu) et j'utilise Git et GitHub de maniere avancee (gestion de branches, organisations, visibilite des projets, collaboration).",
-      "Je developpe et maintiens des projets personnels et collectifs, souvent heberges au sein d'organisations GitHub, avec une attention particuliere a la structure, a la proprete du code et a la documentation.",
-      "Je m'interesse activement a l'intelligence artificielle, notamment aux agents IA, a l'automatisation et a l'utilisation de l'IA pour generer des contenus techniques, ameliorer la productivite des developpeurs, et concevoir des outils intelligents utiles au quotidien.",
+    sectionLabel: "a propos",
+    title: "parcours",
+    paragraphs: [
+      "Ingenieur logiciel de formation, je travaille principalement sous Linux (Ubuntu) et j'utilise Git et GitHub de maniere avancee — gestion de branches, organisations, collaboration.",
+      "Je developpe et maintiens des projets personnels et collectifs, souvent heberges au sein d'organisations GitHub. J'attache une attention particuliere a la structure du code, a la documentation et a la reproductibilite des environnements.",
+      "Je m'interesse activement a l'intelligence artificielle : agents IA, automatisation, generation de contenus techniques, amelioration de la productivite des developpeurs.",
     ],
-    goalsTitle: "Objectifs",
-    goalsText:
-      "Mon objectif est de construire des projets utiles, evolutifs et bien structures, tout en developpant une identite technique forte a travers mes organisations et mon portfolio.",
+    stackLabel: "stack principale",
+    focusLabel: "centres d'interet",
+    focusItems: [
+      "Agents IA & automatisation",
+      "Architecture scalable",
+      "Developpement full stack",
+      "Outils developpeur",
+    ],
     stats: [
-      { number: "3+", label: "Annees d'experience" },
-      { number: "27", label: "Projets realises" },
-      { number: "7", label: "Technologies favorites" },
-    ],
-    features: [
-      {
-        title: "Developpement Web",
-        description: "Applications React/Next.js modernes avec TypeScript, performances optimisees et SEO.",
-      },
-      {
-        title: "Backend & APIs",
-        description: "APIs RESTful et GraphQL avec Node.js, Python, bases de donnees SQL/NoSQL.",
-      },
-      {
-        title: "Intelligence Artificielle",
-        description: "Integration de modeles ML, agents IA, NLP et computer vision.",
-      },
-      {
-        title: "DevOps & Cloud",
-        description: "Deploiement CI/CD, Docker, Kubernetes, AWS/GCP/Azure.",
-      },
-      {
-        title: "Developpement Mobile",
-        description: "Conception d'applications mobiles performantes avec Flutter.",
-      },
-      {
-        title: "Architecture",
-        description: "Conception d'architectures scalables, microservices, clean code.",
-      },
+      { number: "29+", label: "repos GitHub" },
+      { number: "6", label: "repos publics" },
+      { number: "1", label: "agent personnel (OWL)" },
     ],
   },
   en: {
-    badge: "About me",
-    title: "A developer passionate about innovation",
-    intro:
-      "I am a versatile developer focused on web, mobile, software, and artificial intelligence, with daily practice of modern development tools.",
-    journeyTitle: "My journey",
-    journeyParagraphs: [
-      "I mainly work on Linux (Ubuntu) and I use Git and GitHub at an advanced level (branch management, organizations, project visibility, collaboration).",
-      "I build and maintain personal and collaborative projects, often hosted inside GitHub organizations, with close attention to structure, code quality, and documentation.",
-      "I am deeply interested in artificial intelligence, especially AI agents, automation, and using AI to generate technical content, improve developer productivity, and design useful intelligent tools.",
+    sectionLabel: "about",
+    title: "background",
+    paragraphs: [
+      "Trained as a software engineer, I primarily work on Linux (Ubuntu) and use Git and GitHub at an advanced level — branch management, organizations, collaboration.",
+      "I build and maintain personal and collaborative projects, often hosted inside GitHub organizations. I pay close attention to code structure, documentation, and environment reproducibility.",
+      "I have a strong interest in artificial intelligence: AI agents, automation, technical content generation, improving developer productivity.",
     ],
-    goalsTitle: "Goals",
-    goalsText:
-      "My goal is to build useful, scalable, and well-structured projects while developing a strong technical identity through my organizations and portfolio.",
+    stackLabel: "core stack",
+    focusLabel: "focus areas",
+    focusItems: [
+      "AI agents & automation",
+      "Scalable architecture",
+      "Full stack development",
+      "Developer tooling",
+    ],
     stats: [
-      { number: "3+", label: "Years of experience" },
-      { number: "27", label: "Completed projects" },
-      { number: "7", label: "Favorite technologies" },
-    ],
-    features: [
-      {
-        title: "Web Development",
-        description: "Modern React/Next.js applications with TypeScript, optimized performance, and SEO.",
-      },
-      {
-        title: "Backend & APIs",
-        description: "RESTful and GraphQL APIs with Node.js, Python, SQL/NoSQL databases.",
-      },
-      {
-        title: "Artificial Intelligence",
-        description: "ML model integration, AI agents, NLP, and computer vision.",
-      },
-      {
-        title: "DevOps & Cloud",
-        description: "CI/CD deployment, Docker, Kubernetes, AWS/GCP/Azure.",
-      },
-      {
-        title: "Mobile Development",
-        description: "Building high-performance mobile applications with Flutter.",
-      },
-      {
-        title: "Architecture",
-        description: "Scalable architecture design, microservices, and clean code.",
-      },
+      { number: "29+", label: "GitHub repos" },
+      { number: "6", label: "public repos" },
+      { number: "1", label: "personal agent (OWL)" },
     ],
   },
 };
 
+const stack = ["TypeScript", "React", "Next.js", "Python", "FastAPI", "PostgreSQL", "Linux", "Git"];
+
 export default function About() {
   const { language } = useLanguage();
   const t = copy[language];
-
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section id="about" className="relative py-20 sm:py-28 bg-zinc-50 dark:bg-black">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="about" className="relative py-24 sm:py-32">
+      <div className="max-w-5xl mx-auto px-6 sm:px-12 md:px-16">
+        {/* Section header */}
         <motion.div
           ref={ref}
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          transition={{ duration: 0.5 }}
+          className="flex items-center gap-3 mb-12"
         >
-          <motion.span
-            className="inline-block px-4 py-2 rounded-full glass text-sm text-violet-400 mb-4"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={isInView ? { opacity: 1, scale: 1 } : {}}
-            transition={{ delay: 0.1 }}
-          >
-            {t.badge}
-          </motion.span>
-
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-zinc-900 dark:text-white mb-6">{t.title}</h2>
-
-          <p className="text-lg text-zinc-600 dark:text-zinc-400 max-w-3xl mx-auto leading-relaxed">{t.intro}</p>
+          <span className="font-mono text-accent text-sm">01.</span>
+          <span className="font-mono text-sm text-muted uppercase tracking-widest">{t.sectionLabel}</span>
+          <div className="h-px flex-1 bg-border" />
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-8 items-start mb-16">
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="space-y-6"
-          >
-            <div className="glass rounded-2xl p-8">
-              <h3 className="text-2xl font-semibold text-zinc-900 dark:text-white mb-4">{t.journeyTitle}</h3>
-              <div className="space-y-4 text-zinc-700 dark:text-zinc-400 leading-relaxed">
-                {t.journeyParagraphs.map((paragraph) => (
-                  <p key={paragraph}>{paragraph}</p>
-                ))}
-              </div>
-            </div>
-
-            <div className="glass rounded-2xl p-8">
-              <h3 className="text-2xl font-semibold text-zinc-900 dark:text-white mb-4">{t.goalsTitle}</h3>
-              <p className="text-zinc-700 dark:text-zinc-400 leading-relaxed">{t.goalsText}</p>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="grid grid-cols-2 gap-4"
-          >
-            {t.stats.map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                className="glass rounded-2xl p-6 text-center"
-                initial={{ opacity: 0, y: 20 }}
+        {/* Two column layout */}
+        <div className="grid lg:grid-cols-5 gap-12 lg:gap-16">
+          {/* Left: text */}
+          <div className="lg:col-span-3 space-y-5">
+            {t.paragraphs.map((p, i) => (
+              <motion.p
+                key={i}
+                initial={{ opacity: 0, y: 16 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: 0.4 + index * 0.1 }}
-                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.5, delay: 0.1 + i * 0.1 }}
+                className="text-muted leading-relaxed text-base"
               >
-                <div className="text-4xl font-bold gradient-text mb-2">{stat.number}</div>
-                <div className="text-sm text-zinc-600 dark:text-zinc-400">{stat.label}</div>
-              </motion.div>
+                {p}
+              </motion.p>
             ))}
+          </div>
+
+          {/* Right: stats + focus */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="lg:col-span-2 space-y-8"
+          >
+            {/* Stats */}
+            <div className="space-y-3">
+              {t.stats.map((stat) => (
+                <div key={stat.label} className="flex items-baseline gap-3">
+                  <span className="text-2xl font-bold text-foreground">{stat.number}</span>
+                  <span className="text-sm text-muted font-mono">{stat.label}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Focus areas */}
+            <div>
+              <h4 className="text-xs font-mono text-muted uppercase tracking-widest mb-4">{t.focusLabel}</h4>
+              <ul className="space-y-2">
+                {t.focusItems.map((item) => (
+                  <li key={item} className="flex items-center gap-2 text-sm text-muted">
+                    <span className="text-accent text-xs">▹</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </motion.div>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {t.features.map((feature, index) => {
-            const Icon = featureIcons[index];
-
-            return (
-              <motion.div
-                key={feature.title}
-                initial={{ opacity: 0, y: 30 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: 0.5 + index * 0.1 }}
-                whileHover={{ y: -5 }}
-                className="group glass rounded-2xl p-6 transition-all duration-300 hover:bg-zinc-900/10 dark:hover:bg-white/10"
+        {/* Stack */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.5, delay: 0.5 }}
+          className="mt-16 pt-8 border-t border-border"
+        >
+          <h4 className="text-xs font-mono text-muted uppercase tracking-widest mb-6">{t.stackLabel}</h4>
+          <div className="flex flex-wrap gap-2">
+            {stack.map((tech) => (
+              <span
+                key={tech}
+                className="px-3 py-1.5 font-mono text-xs text-muted surface rounded-md"
               >
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-500/20 to-fuchsia-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <Icon className="w-6 h-6 text-violet-400" />
-                </div>
-                <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-2">{feature.title}</h3>
-                <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">{feature.description}</p>
-              </motion.div>
-            );
-          })}
-        </div>
+                {tech}
+              </span>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
   );

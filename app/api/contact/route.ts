@@ -2,14 +2,6 @@ import { NextResponse } from "next/server";
 
 const RESEND_API_URL = "https://api.resend.com/emails";
 
-interface ContactPayload {
-  name?: string;
-  email?: string;
-  subject?: string;
-  message?: string;
-  website?: string;
-}
-
 function sanitize(value: unknown) {
   if (typeof value !== "string") return "";
   return value.trim();
@@ -21,19 +13,12 @@ function isValidEmail(email: string) {
 
 export async function POST(req: Request) {
   try {
-    const body = (await req.json()) as ContactPayload;
-
+    const body = await req.json();
     const name = sanitize(body.name);
     const email = sanitize(body.email);
-    const subject = sanitize(body.subject);
     const message = sanitize(body.message);
-    const website = sanitize(body.website);
 
-    if (website) {
-      return NextResponse.json({ ok: true }, { status: 200 });
-    }
-
-    if (!name || !email || !subject || !message) {
+    if (!name || !email || !message) {
       return NextResponse.json({ error: "Missing required fields." }, { status: 400 });
     }
 
@@ -41,7 +26,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Invalid email address." }, { status: 400 });
     }
 
-    if (name.length > 100 || subject.length > 180 || message.length > 5000) {
+    if (name.length > 100 || message.length > 5000) {
       return NextResponse.json({ error: "Input too long." }, { status: 400 });
     }
 
@@ -51,16 +36,12 @@ export async function POST(req: Request) {
     }
 
     const to = process.env.CONTACT_TO_EMAIL ?? "aziamadjicrepin@gmail.com";
-    const from = process.env.CONTACT_FROM_EMAIL ?? "Portfolio Contact <onboarding@resend.dev>";
+    const from = process.env.CONTACT_FROM_EMAIL ?? "Portfolio <onboarding@resend.dev>";
 
     const text = [
-      "Nouveau message depuis le portfolio",
-      "",
       `Nom: ${name}`,
       `Email: ${email}`,
-      `Sujet: ${subject}`,
       "",
-      "Message:",
       message,
     ].join("\n");
 
@@ -74,7 +55,7 @@ export async function POST(req: Request) {
         from,
         to: [to],
         reply_to: email,
-        subject: `[Portfolio] ${subject}`,
+        subject: `[Portfolio] Message de ${name}`,
         text,
       }),
     });
@@ -92,4 +73,3 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
 }
-

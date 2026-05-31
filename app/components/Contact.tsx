@@ -3,205 +3,129 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef, useState } from "react";
-import { Mail, Send, Github, Linkedin, Twitter, Loader2 } from "lucide-react";
+import { Github, Linkedin, Mail, Send, Loader2 } from "lucide-react";
 import { useLanguage } from "../i18n/LanguageProvider";
 
 const socialLinks = [
   { name: "GitHub", icon: Github, href: "https://github.com/crepin7" },
   { name: "LinkedIn", icon: Linkedin, href: "https://www.linkedin.com/in/cr%C3%A9pin-aziamadji-8a1b722b0/" },
-  { name: "X", icon: Twitter, href: "https://x.com/crepinote" },
+  { name: "Email", icon: Mail, href: "mailto:aziamadjicrepin@gmail.com" },
 ];
 
 const copy = {
   fr: {
-    badge: "Contact",
-    title: "Travaillons ensemble",
-    intro:
-      "Vous avez un projet en tete ? N'hesitez pas a me contacter. Je suis toujours ouvert aux nouvelles opportunites et collaborations.",
-    labels: {
-      name: "Nom",
-      email: "Email",
-      subject: "Sujet",
-      message: "Message",
-    },
-    placeholders: {
-      name: "Votre nom",
-      email: "votre@email.com",
-      subject: "Sujet de votre message",
-      message: "Decrivez votre projet...",
-    },
-    submitIdle: "Envoyer le message",
-    submitLoading: "Envoi en cours...",
-    submitDone: "Message envoye !",
-    info: [
-      { icon: Mail, label: "Email", value: "aziamadjicrepin@gmail.com", href: "mailto:aziamadjicrepin@gmail.com" },
-      { icon: Github, label: "GitHub", value: "github.com/crepin7", href: "https://github.com/crepin7" },
-      { icon: Linkedin, label: "LinkedIn", value: "crepin-aziamadji", href: "https://www.linkedin.com/in/cr%C3%A9pin-aziamadji-8a1b722b0/" },
-      { icon: Twitter, label: "X", value: "x.com/crepinote", href: "https://x.com/crepinote" },
-    ],
-    socialsTitle: "Reseaux sociaux",
-    availabilityTitle: "Disponible",
-    availabilityText:
-      "Je suis actuellement disponible pour des projets freelance et des collaborations. N'hesitez pas a me contacter pour discuter de vos idees.",
-    quickResponseTitle: "Reponse rapide garantie",
-    quickResponseText: "Je reponds generalement sous 24 heures aux emails et messages.",
+    sectionLabel: "contact",
+    title: "Ecrivez-moi",
+    intro: "Un projet, une question, une opportunite ? Je reponds generalement sous 24h.",
+    labels: { name: "Nom", email: "Email", message: "Message" },
+    placeholders: { name: "Votre nom", email: "votre@email.com", message: "Votre message..." },
+    submit: "Envoyer",
+    sending: "Envoi...",
+    sent: "Envoye !",
+    contactEmail: "Email",
+    emailValue: "aziamadjicrepin@gmail.com",
   },
   en: {
-    badge: "Contact",
-    title: "Let's work together",
-    intro:
-      "Do you have a project in mind? Feel free to contact me. I am always open to new opportunities and collaborations.",
-    labels: {
-      name: "Name",
-      email: "Email",
-      subject: "Subject",
-      message: "Message",
-    },
-    placeholders: {
-      name: "Your name",
-      email: "your@email.com",
-      subject: "Message subject",
-      message: "Describe your project...",
-    },
-    submitIdle: "Send message",
-    submitLoading: "Sending...",
-    submitDone: "Message sent!",
-    info: [
-      { icon: Mail, label: "Email", value: "aziamadjicrepin@gmail.com", href: "mailto:aziamadjicrepin@gmail.com" },
-      { icon: Github, label: "GitHub", value: "github.com/crepin7", href: "https://github.com/crepin7" },
-      { icon: Linkedin, label: "LinkedIn", value: "crepin-aziamadji", href: "https://www.linkedin.com/in/cr%C3%A9pin-aziamadji-8a1b722b0/" },
-      { icon: Twitter, label: "X", value: "x.com/crepinote", href: "https://x.com/crepinote" },
-    ],
-    socialsTitle: "Social networks",
-    availabilityTitle: "Available",
-    availabilityText:
-      "I am currently available for freelance projects and collaborations. Feel free to contact me to discuss your ideas.",
-    quickResponseTitle: "Fast response guaranteed",
-    quickResponseText: "I usually reply to emails and messages within 24 hours.",
+    sectionLabel: "contact",
+    title: "Get in touch",
+    intro: "A project, a question, an opportunity? I usually reply within 24h.",
+    labels: { name: "Name", email: "Email", message: "Message" },
+    placeholders: { name: "Your name", email: "your@email.com", message: "Your message..." },
+    submit: "Send",
+    sending: "Sending...",
+    sent: "Sent!",
+    contactEmail: "Email",
+    emailValue: "aziamadjicrepin@gmail.com",
   },
 };
 
 export default function Contact() {
   const { language } = useLanguage();
   const t = copy[language];
-
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState("");
-  const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
-  const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
-  const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const form = e.currentTarget;
     setSubmitError("");
     setIsSubmitting(true);
 
+    const form = e.currentTarget;
     const formData = new FormData(form);
     const payload = {
       name: String(formData.get("name") ?? "").trim(),
       email: String(formData.get("email") ?? "").trim(),
-      subject: String(formData.get("subject") ?? "").trim(),
       message: String(formData.get("message") ?? "").trim(),
-      website: String(formData.get("website") ?? "").trim(),
     };
 
-    if (!payload.name || !payload.email || !payload.subject || !payload.message) {
-      setSubmitError(language === "fr" ? "Veuillez remplir tous les champs." : "Please fill in all fields.");
-      setIsSubmitting(false);
-      return;
-    }
-
-    if (!serviceId || !templateId || !publicKey) {
-      setSubmitError(
-        language === "fr"
-          ? "Configuration EmailJS manquante (service/template/public key)."
-          : "Missing EmailJS configuration (service/template/public key).",
-      );
+    if (!payload.name || !payload.email || !payload.message) {
+      setSubmitError(language === "fr" ? "Remplissez tous les champs." : "Please fill in all fields.");
       setIsSubmitting(false);
       return;
     }
 
     try {
-      const response = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
+      const response = await fetch("/api/contact", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          service_id: serviceId,
-          template_id: templateId,
-          user_id: publicKey,
-          template_params: {
-            name: payload.name,
-            email: payload.email,
-            subject: payload.subject,
-            message: payload.message,
-            to_email: payload.email,
-          },
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
-        const details = (await response.text()).trim();
-        throw new Error(details || `Request failed (${response.status})`);
+        const data = await response.json().catch(() => ({}));
+        throw new Error(data.error || "Request failed.");
       }
 
       form.reset();
-      setSubmitError("");
       setIsSubmitted(true);
       setTimeout(() => setIsSubmitted(false), 3000);
-    } catch (error) {
-      const message = error instanceof Error ? error.message : "Unknown error";
-      setSubmitError(
-        language === "fr"
-          ? `Echec de l'envoi: ${message}`
-          : `Sending failed: ${message}`,
-      );
+    } catch (err) {
+      setSubmitError(err instanceof Error ? err.message : "Unknown error.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <section id="contact" className="relative py-20 sm:py-28 bg-zinc-50 dark:bg-black">
-      <div className="absolute inset-0 bg-gradient-to-t from-violet-200/50 via-zinc-50 to-zinc-50 dark:from-violet-900/10 dark:via-black dark:to-black" />
-
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="contact" className="relative py-24 sm:py-32">
+      <div className="max-w-5xl mx-auto px-6 sm:px-12 md:px-16">
+        {/* Section header */}
         <motion.div
           ref={ref}
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          transition={{ duration: 0.5 }}
+          className="flex items-center gap-3 mb-12"
         >
-          <motion.span
-            className="inline-block px-4 py-2 rounded-full glass text-sm text-violet-400 mb-4"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={isInView ? { opacity: 1, scale: 1 } : {}}
-            transition={{ delay: 0.1 }}
-          >
-            {t.badge}
-          </motion.span>
-
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-zinc-900 dark:text-white mb-6">{t.title}</h2>
-
-          <p className="text-lg text-zinc-600 dark:text-zinc-400 max-w-3xl mx-auto">{t.intro}</p>
+          <span className="font-mono text-accent text-sm">03.</span>
+          <span className="font-mono text-sm text-muted uppercase tracking-widest">{t.sectionLabel}</span>
+          <div className="h-px flex-1 bg-border" />
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-12">
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="text-muted max-w-lg mb-12 text-base"
+        >
+          {t.intro}
+        </motion.p>
+
+        <div className="grid lg:grid-cols-5 gap-12 lg:gap-16">
+          {/* Form */}
           <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="lg:col-span-3"
           >
-            <form onSubmit={handleSubmit} className="glass rounded-2xl p-8 space-y-6">
-              <div className="grid sm:grid-cols-2 gap-6">
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div className="grid sm:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
+                  <label htmlFor="name" className="block text-xs font-mono text-muted uppercase tracking-widest mb-2">
                     {t.labels.name}
                   </label>
                   <input
@@ -209,12 +133,12 @@ export default function Contact() {
                     id="name"
                     name="name"
                     required
-                    className="w-full px-4 py-3 rounded-xl bg-white/80 dark:bg-zinc-900/50 border border-zinc-300 dark:border-zinc-800 text-zinc-900 dark:text-white placeholder-zinc-500 focus:outline-none focus:border-violet-500 transition-colors"
+                    className="w-full px-4 py-3 bg-surface border border-border rounded-lg text-foreground placeholder-muted-2 focus:outline-none focus:border-accent transition-colors text-sm"
                     placeholder={t.placeholders.name}
                   />
                 </div>
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
+                  <label htmlFor="email" className="block text-xs font-mono text-muted uppercase tracking-widest mb-2">
                     {t.labels.email}
                   </label>
                   <input
@@ -222,28 +146,14 @@ export default function Contact() {
                     id="email"
                     name="email"
                     required
-                    className="w-full px-4 py-3 rounded-xl bg-white/80 dark:bg-zinc-900/50 border border-zinc-300 dark:border-zinc-800 text-zinc-900 dark:text-white placeholder-zinc-500 focus:outline-none focus:border-violet-500 transition-colors"
+                    className="w-full px-4 py-3 bg-surface border border-border rounded-lg text-foreground placeholder-muted-2 focus:outline-none focus:border-accent transition-colors text-sm"
                     placeholder={t.placeholders.email}
                   />
                 </div>
               </div>
 
               <div>
-                <label htmlFor="subject" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
-                  {t.labels.subject}
-                </label>
-                <input
-                  type="text"
-                  id="subject"
-                  name="subject"
-                  required
-                  className="w-full px-4 py-3 rounded-xl bg-white/80 dark:bg-zinc-900/50 border border-zinc-300 dark:border-zinc-800 text-zinc-900 dark:text-white placeholder-zinc-500 focus:outline-none focus:border-violet-500 transition-colors"
-                  placeholder={t.placeholders.subject}
-                />
-              </div>
-
-              <div>
-                <label htmlFor="message" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
+                <label htmlFor="message" className="block text-xs font-mono text-muted uppercase tracking-widest mb-2">
                   {t.labels.message}
                 </label>
                 <textarea
@@ -251,122 +161,80 @@ export default function Contact() {
                   name="message"
                   required
                   rows={5}
-                  className="w-full px-4 py-3 rounded-xl bg-white/80 dark:bg-zinc-900/50 border border-zinc-300 dark:border-zinc-800 text-zinc-900 dark:text-white placeholder-zinc-500 focus:outline-none focus:border-violet-500 transition-colors resize-none"
+                  className="w-full px-4 py-3 bg-surface border border-border rounded-lg text-foreground placeholder-muted-2 focus:outline-none focus:border-accent transition-colors resize-none text-sm"
                   placeholder={t.placeholders.message}
                 />
               </div>
 
-              <input type="text" name="website" className="hidden" tabIndex={-1} autoComplete="off" />
+              {submitError && <p className="text-sm text-error font-mono">{submitError}</p>}
 
-              {submitError ? <p className="text-sm text-red-400">{submitError}</p> : null}
-
-              <motion.button
+              <button
                 type="submit"
                 disabled={isSubmitting || isSubmitted}
-                className={`w-full py-4 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all duration-300 ${
+                className={`flex items-center gap-2 px-6 py-3 font-mono text-sm rounded-lg transition-all duration-200 ${
                   isSubmitted
-                    ? "bg-green-500 text-white"
-                    : "bg-zinc-900 dark:bg-white text-white dark:text-black hover:bg-zinc-700 dark:hover:bg-zinc-200"
-                }`}
-                whileHover={!isSubmitting && !isSubmitted ? { scale: 1.02 } : {}}
-                whileTap={!isSubmitting && !isSubmitted ? { scale: 0.98 } : {}}
+                    ? "bg-success text-background"
+                    : "bg-accent text-background hover:brightness-110"
+                } disabled:opacity-60`}
               >
                 {isSubmitting ? (
-                  <>
-                    <Loader2 className="animate-spin" size={20} />
-                    {t.submitLoading}
-                  </>
+                  <><Loader2 className="animate-spin" size={16} /> {t.sending}</>
                 ) : isSubmitted ? (
-                  <>{t.submitDone}</>
+                  t.sent
                 ) : (
-                  <>
-                    <Send size={20} />
-                    {t.submitIdle}
-                  </>
+                  <><Send size={16} /> {t.submit}</>
                 )}
-              </motion.button>
+              </button>
             </form>
           </motion.div>
 
+          {/* Sidebar */}
           <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="space-y-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="lg:col-span-2 space-y-6"
           >
-            <div className="space-y-4">
-              {t.info.map((item, index) => (
-                <motion.div
-                  key={item.label}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ delay: 0.4 + index * 0.1 }}
-                  className="glass rounded-2xl p-6 flex items-center gap-4"
-                >
-                  <div className="w-12 h-12 rounded-xl bg-violet-500/10 flex items-center justify-center">
-                    <item.icon className="text-violet-400" size={24} />
-                  </div>
-                  <div>
-                    <p className="text-sm text-zinc-600 dark:text-zinc-500">{item.label}</p>
-                    {item.href ? (
-                      <a href={item.href} className="text-zinc-900 dark:text-white hover:text-violet-400 transition-colors">
-                        {item.value}
-                      </a>
-                    ) : (
-                      <p className="text-zinc-900 dark:text-white">{item.value}</p>
-                    )}
-                  </div>
-                </motion.div>
-              ))}
+            {/* Direct email */}
+            <div className="p-5 surface rounded-lg">
+              <h4 className="text-xs font-mono text-muted uppercase tracking-widest mb-3">{t.contactEmail}</h4>
+              <a
+                href={`mailto:${t.emailValue}`}
+                className="text-sm font-mono text-foreground hover:text-accent transition-colors break-all"
+              >
+                {t.emailValue}
+              </a>
             </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.6 }}
-              className="glass rounded-2xl p-6"
-            >
-              <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">{t.socialsTitle}</h3>
-              <div className="flex gap-4">
-                {socialLinks.map((social) => (
-                  <motion.a
-                    key={social.name}
-                    href={social.href}
+            {/* Social links */}
+            <div className="p-5 surface rounded-lg">
+              <h4 className="text-xs font-mono text-muted uppercase tracking-widest mb-4">Social</h4>
+              <div className="space-y-3">
+                {socialLinks.map((link) => (
+                  <a
+                    key={link.name}
+                    href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-12 h-12 rounded-xl bg-zinc-200/80 dark:bg-zinc-800/50 flex items-center justify-center text-zinc-700 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-violet-500/20 transition-all duration-300"
-                    whileHover={{ scale: 1.1, y: -2 }}
-                    whileTap={{ scale: 0.9 }}
+                    className="flex items-center gap-3 text-sm font-mono text-muted hover:text-accent transition-colors"
                   >
-                    <social.icon size={20} />
-                  </motion.a>
+                    <link.icon size={16} />
+                    {link.name}
+                  </a>
                 ))}
               </div>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.7 }}
-              className="glass rounded-2xl p-6"
-            >
-              <div className="flex items-center gap-3 mb-3">
-                <span className="w-3 h-3 rounded-full bg-green-400 animate-pulse" />
-                <span className="text-green-400 font-medium">{t.availabilityTitle}</span>
-              </div>
-              <p className="text-zinc-600 dark:text-zinc-400 text-sm">{t.availabilityText}</p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.8 }}
-              className="rounded-2xl p-6 bg-gradient-to-br from-violet-500/10 to-fuchsia-500/10 border border-violet-500/20"
-            >
-              <p className="text-zinc-700 dark:text-zinc-300 text-sm">
-                <span className="text-zinc-900 dark:text-white font-medium">{t.quickResponseTitle}</span> - {t.quickResponseText}
-              </p>
-            </motion.div>
+            {/* Availability */}
+            <div className="flex items-center gap-2 p-4 bg-accent-glow rounded-lg border border-accent/20">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-success opacity-50"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-success"></span>
+              </span>
+              <span className="text-xs font-mono text-muted">
+                {language === "fr" ? "Actuellement disponible" : "Currently available"}
+              </span>
+            </div>
           </motion.div>
         </div>
       </div>

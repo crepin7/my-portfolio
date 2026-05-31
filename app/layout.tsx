@@ -14,13 +14,13 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Crépin AZIAMADJI | Développeur Full Stack & IA",
-  description: "Portfolio d'un développeur passionné spécialisé en web, logiciels et intelligence artificielle. Découvrez mes projets et compétences.",
-  keywords: ["développeur", "full stack", "IA", "web", "react", "nextjs", "typescript"],
-  authors: [{ name: "Crépin AZIAMADJI" }],
+  title: "Crepin AZIAMADJI — Software Engineer",
+  description: "Ingenieur logiciel. Linux, automatisation, IA,_FULL stack. Portfolio de Crepin AZIAMADJI.",
+  keywords: ["developpeur", "ingenieur logiciel", "linux", "full stack", "typescript", "python", "automatisation", "IA"],
+  authors: [{ name: "Crepin AZIAMADJI" }],
   openGraph: {
-    title: "Crépin AZIAMADJI | Développeur Full Stack & IA",
-    description: "Portfolio d'un développeur passionné spécialisé en web, logiciels et intelligence artificielle.",
+    title: "Crepin AZIAMADJI — Software Engineer",
+    description: "Ingenieur logiciel. Linux, automatisation, IA, full stack.",
     type: "website",
   },
 };
@@ -31,25 +31,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr" suppressHydrationWarning>
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                try {
-                  const storedTheme = localStorage.getItem("theme");
-                  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-                  const shouldUseDark = storedTheme ? storedTheme === "dark" : prefersDark;
-                  document.documentElement.classList.toggle("dark", shouldUseDark);
-                } catch (_) {}
-              })();
-            `,
-          }}
-        />
-      </head>
+    <html lang="fr" className="dark">
       <body
-        className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased bg-zinc-50 text-zinc-900 dark:bg-black dark:text-white transition-colors`}
+        className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased bg-background text-foreground`}
       >
         <LanguageProvider>{children}</LanguageProvider>
       </body>
