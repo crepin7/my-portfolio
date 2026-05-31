@@ -116,7 +116,7 @@ export default function Hero() {
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay 0.55 }}
+          transition={{ duration: 0.5, delay: 0.55 }}
           className="text-base sm:text-lg text-muted max-w-2xl leading-relaxed mb-12"
         >
           {t.description}
@@ -126,7 +126,7 @@ export default function Hero() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay 0.65 }}
+          transition={{ duration: 0.5, delay: 0.65 }}
           className="flex flex-col sm:flex-row items-start gap-4 mb-16"
         >
           <a
