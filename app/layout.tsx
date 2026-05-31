@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { LanguageProvider } from "./i18n/LanguageProvider";
 import "./globals.css";
@@ -15,7 +15,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: "Crepin AZIAMADJI — Software Engineer",
-  description: "Ingenieur logiciel. Linux, automatisation, IA,_FULL stack. Portfolio de Crepin AZIAMADJI.",
+  description: "Ingenieur logiciel. Linux, automatisation, IA, full stack. Portfolio de Crepin AZIAMADJI.",
   keywords: ["developpeur", "ingenieur logiciel", "linux", "full stack", "typescript", "python", "automatisation", "IA"],
   authors: [{ name: "Crepin AZIAMADJI" }],
   openGraph: {
@@ -23,6 +23,13 @@ export const metadata: Metadata = {
     description: "Ingenieur logiciel. Linux, automatisation, IA, full stack.",
     type: "website",
   },
+  icons: {
+    icon: "/favicon.svg",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0a0a0a",
 };
 
 export default function RootLayout({
