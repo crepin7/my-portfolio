@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from 'next/script';
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { LanguageProvider } from "./i18n/LanguageProvider";
 import "./globals.css";
@@ -39,6 +40,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr" className="dark">
+      <head>
+	<Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?c>
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+      />
+      </head>
       <body
         className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased bg-background text-foreground`}
       >
